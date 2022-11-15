@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: List
+items:
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: rod
+      namespace: ramblerutils
+      labels:
+        app: rod
+    spec:
+      replicas: 3
+      template:
+        metadata:
+          name: rod
+          labels:
+            app: rod
+        spec:
+          containers:
+            - name: rod
+              image: ghcr.io/go-rod/rod:latest
+              ports:
+                - containerPort: 7317
+              imagePullPolicy: IfNotPresent
+          restartPolicy: Always
+      selector:
+        matchLabels:
+          app: rod
+  - kind: Service
+    apiVersion: v1
+    metadata:
+      name: rod
+      namespace: ramblerutils
+    spec:
+      selector:
+        app: rod
+      type: NodePort
+      ports:
+        - port: 7317
+          nodePort: 30713
