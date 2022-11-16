@@ -1,0 +1,15 @@
+RenderConfig:
+  RenderClient:
+    RenderServerURI: "127.0.0.1:3741"
+    RenderPoolSize: 10
+  RenderBackend:
+    RedisConfig:
+      Address: "127.0.0.1:6379"
+      Password: ""
+      DB: 0
+      Prefix: "renderer"
+      Expires: 0
+    MongoConfig:
+      ClientURL: "127.0.0.1:27017"
+      DataBase: "renderer"
+      Collection: "renderer"

@@ -10,7 +10,7 @@ import (
 func main() {
 	l := launcher.MustNewManaged("ws://150.158.3.190:30713").
 		Set("disable-gpu").Delete("disable-gpu").
-		Headless(false).XVFB("--server-num=5", "--server-args=-screen 0 1600x900x16").
+		//XVFB("--server-num=5", "--server-args=-screen 0 1600x900x16").
 		Headless(true)
 
 	browser := rod.New().Client(l.MustClient()).MustConnect()

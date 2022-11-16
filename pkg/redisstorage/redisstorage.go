@@ -38,7 +38,6 @@ func (s *Storage) Init() error {
 			DB:       s.DB,
 		})
 	}
-
 	if _, err := s.Client.Ping().Result(); err != nil {
 		return fmt.Errorf("redisstorage: Redis connection error %s", err.Error())
 	}
