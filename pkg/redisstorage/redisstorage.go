@@ -46,24 +46,37 @@ func (s *Storage) Init() error {
 
 // Clear removes all entries from the storage
 func (s *Storage) Clear() error {
-	s.mu.Lock()
-	defer s.mu.Unlock()
-	r := s.Client.Keys(s.getCookieID("*"))
-	keys, err := r.Result()
-	if err != nil {
-		return err
-	}
-	r2 := s.Client.Keys(s.Prefix + ":request:*")
-	keys2, err := r2.Result()
-	if err != nil {
-		return err
-	}
-	keys = append(keys, keys2...)
-	keys = append(keys, s.getQueueID())
-	return s.Client.Del(keys...).Err()
+	return s.Client.Del(s.Prefix).Err()
 }
 
-// QueueSize implements queue.Storage.QueueSize() function
+// Visited implements colly/storage.Visited()
+func (s *Storage) Visited(requestID uint64) error {
+	return s.Client.Set(s.getIDStr(requestID), "1", s.Expires).Err()
+}
+
+// IsVisited implements colly/storage.IsVisited()
+func (s *Storage) IsVisited(requestID uint64) (bool, error) {
+	_, err := s.Client.Get(s.getIDStr(requestID)).Result()
+	if err == redis.Nil {
+		return false, nil
+	} else if err != nil {
+		return false, err
+	}
+	return true, nil
+}
+
+func (s *Storage) AddRequest(r []byte) error {
+	return s.Client.RPush(s.getQueueID(), r).Err()
+}
+
+func (s *Storage) GetRequest() ([]byte, error) {
+	r, err := s.Client.LPop(s.getQueueID()).Bytes()
+	if err != nil {
+		return nil, err
+	}
+	return r, err
+}
+
 func (s *Storage) QueueSize() (int, error) {
 	i, err := s.Client.LLen(s.getQueueID()).Result()
 	return int(i), err
