@@ -22,8 +22,7 @@ func main() {
 	})
 
 	router := page.HijackRequests()
-	//router.MustAdd("*.png", func(ctx *rod.Hijack) {
-	router.MustAdd("*.jpg", func(ctx *rod.Hijack) {
+	router.MustAdd(`*.bmp|*.jpg|*.jpeg|*.png|*.gif`, func(ctx *rod.Hijack) {
 		// 你可以使用很多其他 enum 类型，比如 NetworkResourceTypeScript 用于 javascript
 		// 这个例子里我们使用 NetworkResourceTypeImage 来阻止图片
 		if ctx.Request.Type() == proto.NetworkResourceTypeImage {
