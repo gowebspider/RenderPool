@@ -12,7 +12,7 @@ type RenderBackend struct {
 
 type RenderClient struct {
 	RenderServerURI string
-	RenderPoolSize  uint32
+	RenderPoolSize  int
 }
 
 type RenderConfig struct {

@@ -27,4 +27,5 @@ func main() {
 	if err := cfg.RenderBackend.MongoConfig.Init(); err != nil {
 		panic(err)
 	}
+
 }

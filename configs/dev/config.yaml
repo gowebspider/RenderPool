@@ -10,6 +10,6 @@ RenderConfig:
       Prefix: "renderer"
       Expires: 0
     MongoConfig:
-      ClientURL: "127.0.0.1:27017"
+      ClientURL: "mongodb://127.0.0.1:27017"
       DataBase: "renderer"
       Collection: "renderer"
